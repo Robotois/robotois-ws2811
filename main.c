@@ -73,29 +73,46 @@ int led_count = LED_COUNT;
 
 int clear_on_exit = 0;
 
-ws2811_t ledstring =
-{
-    .freq = TARGET_FREQ,
-    .dmanum = DMA,
-    .channel =
-    {
-        [0] =
-        {
-            .gpionum = GPIO_PIN,
-            .count = LED_COUNT,
-            .invert = 0,
-            .brightness = 255,
-            .strip_type = STRIP_TYPE,
-        },
-        [1] =
-        {
-            .gpionum = 0,
-            .count = 0,
-            .invert = 0,
-            .brightness = 0,
-        },
-    },
-};
+// ws2811_t ledstring =
+// {
+//     .freq = TARGET_FREQ,
+//     .dmanum = DMA,
+//     .channel =
+//     {
+//         [0] =
+//         {
+//             .gpionum = GPIO_PIN,
+//             .count = LED_COUNT,
+//             .invert = 0,
+//             .brightness = 255,
+//             .strip_type = STRIP_TYPE,
+//         },
+//         [1] =
+//         {
+//             .gpionum = 0,
+//             .count = 0,
+//             .invert = 0,
+//             .brightness = 0,
+//         },
+//     },
+// };
+ws2811_t ledstring = {};
+
+void initializer() {
+  ledstring.freq = TARGET_FREQ;
+  ledstring.dmanum = DMA;
+
+  ledstring.channel[0].gpionum = GPIO_PIN;
+  ledstring.channel[0].invert = 0;
+  ledstring.channel[0].count = LED_COUNT;
+  ledstring.channel[0].brightness = 255;
+  ledstring.channel[0].strip_type = STRIP_TYPE;
+
+  ledstring.channel[1].gpionum = 0;
+  ledstring.channel[1].invert = 0;
+  ledstring.channel[1].count = 0;
+  ledstring.channel[1].brightness = 0;
+}
 
 ws2811_led_t *matrix;
 
@@ -196,10 +213,8 @@ static void ctrl_c_handler(int signum)
 
 static void setup_handlers(void)
 {
-    struct sigaction sa =
-    {
-        .sa_handler = ctrl_c_handler,
-    };
+    struct sigaction sa;
+    sa.sa_handler = ctrl_c_handler,
 
     sigaction(SIGINT, &sa, NULL);
     sigaction(SIGTERM, &sa, NULL);
@@ -374,13 +389,14 @@ void parseargs(int argc, char **argv, ws2811_t *ws2811)
 
 int main(int argc, char *argv[])
 {
+  initializer();
     ws2811_return_t ret;
 
     sprintf(VERSION, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
 
     parseargs(argc, argv, &ledstring);
 
-    matrix = malloc(sizeof(ws2811_led_t) * width * height);
+    matrix = (ws2811_led_t *)malloc(sizeof(ws2811_led_t) * width * height);
 
     setup_handlers();
 

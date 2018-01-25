@@ -16,7 +16,7 @@
  *         provided with the distribution.
  *     3.  Neither the name of the owner nor the names of its contributors may be used to endorse
  *         or promote products derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE
@@ -88,20 +88,20 @@ const pcm_pin_table_t pcm_pin_dout[] =
 const pcm_pin_tables_t pcm_pin_tables[NUM_PCMFUNS] =
 {
     {
-        .pins = pcm_pin_clk,
-        .count = sizeof(pcm_pin_clk) / sizeof(pcm_pin_clk[0]),
+      .count = sizeof(pcm_pin_clk) / sizeof(pcm_pin_clk[0]),
+      .pins = pcm_pin_clk,
     },
     {
-        .pins = pcm_pin_fs,
-        .count = sizeof(pcm_pin_fs) / sizeof(pcm_pin_fs[0]),
+      .count = sizeof(pcm_pin_fs) / sizeof(pcm_pin_fs[0]),
+      .pins = pcm_pin_fs,
     },
     {
-        .pins = pcm_pin_din,
-        .count = sizeof(pcm_pin_din) / sizeof(pcm_pin_din[0]),
+      .count = sizeof(pcm_pin_din) / sizeof(pcm_pin_din[0]),
+      .pins = pcm_pin_din,
     },
     {
-        .pins = pcm_pin_dout,
-        .count = sizeof(pcm_pin_dout) / sizeof(pcm_pin_dout[0]),
+      .count = sizeof(pcm_pin_dout) / sizeof(pcm_pin_dout[0]),
+      .pins = pcm_pin_dout,
     },
 };
 
@@ -124,4 +124,3 @@ int pcm_pin_alt(int pcmfun, int pinnum)
 
     return -1;
 }
-

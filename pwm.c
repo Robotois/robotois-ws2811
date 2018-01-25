@@ -15,7 +15,7 @@
  *         provided with the distribution.
  *     3.  Neither the name of the owner nor the names of its contributors may be used to endorse
  *         or promote products derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE
@@ -30,7 +30,7 @@
 
 #include <stdint.h>
 
-#include "ws2811.h"
+// #include "ws2811.h"
 
 #include "pwm.h"
 
@@ -76,12 +76,12 @@ const pwm_pin_table_t pwm_pin_chan1[] =
 const pwm_pin_tables_t pwm_pin_tables[RPI_PWM_CHANNELS] =
 {
     {
-        .pins = pwm_pin_chan0,
-        .count = sizeof(pwm_pin_chan0) / sizeof(pwm_pin_chan0[0]),
+      .count = sizeof(pwm_pin_chan0) / sizeof(pwm_pin_chan0[0]),
+      .pins = pwm_pin_chan0,
     },
     {
-        .pins = pwm_pin_chan1,
-        .count = sizeof(pwm_pin_chan1) / sizeof(pwm_pin_chan1[0]),
+      .count = sizeof(pwm_pin_chan1) / sizeof(pwm_pin_chan1[0]),
+      .pins = pwm_pin_chan1,
     },
 };
 
@@ -101,4 +101,3 @@ int pwm_pin_alt(int chan, int pinnum)
 
     return -1;
 }
-
