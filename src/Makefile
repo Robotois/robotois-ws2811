@@ -23,26 +23,26 @@ H_FILES= \
 all: dma.o pwm.o ws2811.o mailbox.o rpihw.o pcm.o main.o
 	$(CC) $(LINKER_FLAGS) -o runner $(OBJECTS)
 
-main.o: main.c
-	$(CC) $(COMPILE_FLAGS) main.c
+main.o: libs/main.c
+	$(CC) $(COMPILE_FLAGS) libs/main.c
 
-pwm.o: pwm.c
-	$(CC) $(COMPILE_FLAGS) pwm.c
+pwm.o: libs/pwm.c
+	$(CC) $(COMPILE_FLAGS) libs/pwm.c
 
-dma.o: dma.c
-	$(CC) $(COMPILE_FLAGS) dma.c
+dma.o: libs/dma.c
+	$(CC) $(COMPILE_FLAGS) libs/dma.c
 
-ws2811.o: ws2811.c
-	$(CC) $(COMPILE_FLAGS) ws2811.c
+ws2811.o: libs/ws2811.c
+	$(CC) $(COMPILE_FLAGS) libs/ws2811.c
 
-rpihw.o: rpihw.c
-	$(CC) $(COMPILE_FLAGS) rpihw.c
+rpihw.o: libs/rpihw.c
+	$(CC) $(COMPILE_FLAGS) libs/rpihw.c
 
-mailbox.o: mailbox.c
-	$(CC) $(COMPILE_FLAGS) mailbox.c
+mailbox.o: libs/mailbox.c
+	$(CC) $(COMPILE_FLAGS) libs/mailbox.c
 
-pcm.o: pcm.c
-	$(CC) $(COMPILE_FLAGS) pcm.c
+pcm.o: libs/pcm.c
+	$(CC) $(COMPILE_FLAGS) libs/pcm.c
 
 clean:
 	$(RM) $(OBJECTS) runner
