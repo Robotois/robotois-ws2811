@@ -18,7 +18,7 @@ using v8::Value;
 Persistent<Function> MyObject::constructor;
 
 MyObject::MyObject() {
-  ledStripInit(1, 1);
+  ledStripInit(1, 1, (uint8_t) 64);
 }
 
 MyObject::~MyObject() {

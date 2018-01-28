@@ -44,7 +44,7 @@ ws2811_return_t ret;
  * @param w Width of the data matrix
  * @param h Height of the data matrix, if height is 1 it will be like an array
  */
-void ledStripInit(int w = 8, int h = 8) {
+void ledStripInit(int w = 8, int h = 8, uint8_t brightness = 255) {
   width = w;
   height = h;
   led_count = w*h;
@@ -53,7 +53,7 @@ void ledStripInit(int w = 8, int h = 8) {
   ledstring.channel[0].gpionum = GPIO_PIN;
   ledstring.channel[0].count = led_count;
   ledstring.channel[0].invert = 0;
-  ledstring.channel[0].brightness = 255;
+  ledstring.channel[0].brightness = brightness;
   ledstring.channel[0].strip_type = STRIP_TYPE;
 
   ledstring.channel[1].gpionum = 0;

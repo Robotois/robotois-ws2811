@@ -9,3 +9,5 @@ runner
 /src/WS2811/build/
 /src/LEDStrip/build/
 /src/LEDStrip/dist/
+build
+node_modules
