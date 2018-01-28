@@ -1,0 +1,21 @@
+{
+  "name": "robotois-ws2811",
+  "version": "1.0.0",
+  "description": "Node.js package to set the colors of a RGB LEDs strip from a Raspberry PI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Robotois/robotois-ws2811.git"
+  },
+  "author": "yovany.lg@gmail.com",
+  "license": "ISC",
+  "gypfile": true,
+  "bugs": {
+    "url": "https://github.com/Robotois/robotois-ws2811/issues"
+  },
+  "homepage": "https://github.com/Robotois/robotois-ws2811#readme"
+}
