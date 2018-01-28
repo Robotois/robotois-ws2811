@@ -37,7 +37,6 @@ extern "C" {
 
 #include "rpihw.h"
 #include "pwm.h"
-#include "pcm.h"
 
 
 #define WS2811_TARGET_FREQ                       800000   // Can go as low as 400000
@@ -64,31 +63,7 @@ extern "C" {
 #define SK6812_STRIP                             WS2811_STRIP_GRB
 #define SK6812W_STRIP                            SK6812_STRIP_GRBW
 
-//struct ws2811_device;
-typedef struct videocore_mbox {
-    int handle;             /* From mbox_open() */
-    unsigned mem_ref;       /* From mem_alloc() */
-    unsigned bus_addr;      /* From mem_lock() */
-    unsigned size;          /* Size of allocation */
-    uint8_t *virt_addr;     /* From mapmem() */
-} videocore_mbox_t;
-
-typedef struct ws2811_device
-{
-    int driver_mode;
-    volatile uint8_t *pxl_raw;
-    volatile dma_t *dma;
-    volatile pwm_t *pwm;
-    volatile pcm_t *pcm;
-    int spi_fd;
-    volatile dma_cb_t *dma_cb;
-    uint32_t dma_cb_addr;
-    volatile gpio_t *gpio;
-    volatile cm_clk_t *cm_clk;
-    videocore_mbox_t mbox;
-    int max_count;
-} ws2811_device_t;
-
+struct ws2811_device;
 
 typedef uint32_t ws2811_led_t;                   //< 0xWWRRGGBB
 typedef struct
@@ -109,7 +84,7 @@ typedef struct
 typedef struct
 {
     uint64_t render_wait_time;                   //< time in µs before the next render can run
-    ws2811_device_t *device;                //< Private data for driver use
+    struct ws2811_device *device;                //< Private data for driver use
     const rpi_hw_t *rpi_hw;                      //< RPI Hardware Information
     uint32_t freq;                               //< Required output frequency
     int dmanum;                                  //< DMA number _not_ already in use

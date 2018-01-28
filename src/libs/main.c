@@ -71,7 +71,7 @@ int width = WIDTH;
 int height = HEIGHT;
 int led_count = LED_COUNT;
 
-int clear_on_exit = 0;
+int clear_on_exit = 1;
 
 // ws2811_t ledstring =
 // {
@@ -101,16 +101,15 @@ ws2811_t ledstring = {};
 void initializer() {
   ledstring.freq = TARGET_FREQ;
   ledstring.dmanum = DMA;
-
   ledstring.channel[0].gpionum = GPIO_PIN;
-  ledstring.channel[0].invert = 0;
   ledstring.channel[0].count = LED_COUNT;
+  ledstring.channel[0].invert = 0;
   ledstring.channel[0].brightness = 255;
   ledstring.channel[0].strip_type = STRIP_TYPE;
 
   ledstring.channel[1].gpionum = 0;
-  ledstring.channel[1].invert = 0;
   ledstring.channel[1].count = 0;
+  ledstring.channel[1].invert = 0;
   ledstring.channel[1].brightness = 0;
 }
 
@@ -162,14 +161,14 @@ void matrix_clear(void)
 int dotspos[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 ws2811_led_t dotcolors[] =
 {
-    0x00F00000,  // red
-    0x00F0F000,  // orange
-    0x00F0F000,  // yellow
-    0x0000F000,  // green
-    0x0000F0F0,  // lightblue
-    0x000000F0,  // blue
-    0x00F000F0,  // purple
-    0x00F000F0,  // pink
+    0x00200000,  // red
+    0x00201000,  // orange
+    0x00202000,  // yellow
+    0x00002000,  // green
+    0x00002020,  // lightblue
+    0x00000020,  // blue
+    0x00100010,  // purple
+    0x00200010,  // pink
 };
 
 ws2811_led_t dotcolors_rgbw[] =
@@ -215,7 +214,6 @@ static void setup_handlers(void)
 {
     struct sigaction sa;
     sa.sa_handler = ctrl_c_handler,
-
     sigaction(SIGINT, &sa, NULL);
     sigaction(SIGTERM, &sa, NULL);
 }

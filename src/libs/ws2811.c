@@ -90,29 +90,29 @@
 // physical address, and map it 'uncached' so that writes from this
 // code are immediately visible to the DMA controller.  This struct
 // holds data relevant to the mailbox interface.
-//typedef struct videocore_mbox {
-//    int handle;             /* From mbox_open() */
-//    unsigned mem_ref;       /* From mem_alloc() */
-//    unsigned bus_addr;      /* From mem_lock() */
-//    unsigned size;          /* Size of allocation */
-//    uint8_t *virt_addr;     /* From mapmem() */
-//} videocore_mbox_t;
-//
-//typedef struct ws2811_device
-//{
-//    int driver_mode;
-//    volatile uint8_t *pxl_raw;
-//    volatile dma_t *dma;
-//    volatile pwm_t *pwm;
-//    volatile pcm_t *pcm;
-//    int spi_fd;
-//    volatile dma_cb_t *dma_cb;
-//    uint32_t dma_cb_addr;
-//    volatile gpio_t *gpio;
-//    volatile cm_clk_t *cm_clk;
-//    videocore_mbox_t mbox;
-//    int max_count;
-//} ws2811_device_t;
+typedef struct videocore_mbox {
+    int handle;             /* From mbox_open() */
+    unsigned mem_ref;       /* From mem_alloc() */
+    unsigned bus_addr;      /* From mem_lock() */
+    unsigned size;          /* Size of allocation */
+    uint8_t *virt_addr;     /* From mapmem() */
+} videocore_mbox_t;
+
+typedef struct ws2811_device
+{
+    int driver_mode;
+    volatile uint8_t *pxl_raw;
+    volatile dma_t *dma;
+    volatile pwm_t *pwm;
+    volatile pcm_t *pcm;
+    int spi_fd;
+    volatile dma_cb_t *dma_cb;
+    uint32_t dma_cb_addr;
+    volatile gpio_t *gpio;
+    volatile cm_clk_t *cm_clk;
+    videocore_mbox_t mbox;
+    int max_count;
+} ws2811_device_t;
 
 /**
  * Provides monotonic timestamp in microseconds.
