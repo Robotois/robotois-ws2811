@@ -42,20 +42,49 @@ function WS2811Module() {
   });
 }
 
-WS2811Module.prototype.turnOff = function turnOff() {
-  this.rgb.ledOff();
-  this.ledStatus = false;
-};
-
-WS2811Module.prototype.turnOnRGB = function (red, green, blue) {
+WS2811Module.prototype.ledOn = function ledOn(red, green, blue) {
   this.led.ledOn(red, green, blue);
   this.ledStatus = true;
 }
 
+WS2811Module.prototype.ledOff = function ledOff(red, green, blue) {
+  this.led.ledOff();
+  this.ledStatus = false;
+}
+
+
+WS2811Module.prototype.turnOff = function turnOff() {
+  if (this.blinkInterval) {
+    clearInterval(this.blinkInterval);
+    this.blinkInterval = false;
+    this.ledOff();
+    return;
+  }
+
+  this.rgb.ledOff();
+};
+
+WS2811Module.prototype.turnOnRGB = function (red, green, blue) {
+  if (this.blinkInterval) {
+    clearInterval(this.blinkInterval);
+    this.blinkInterval = false;
+    this.ledOn(red, green, blue);
+    return;
+  }
+
+  this.ledOn(red, green, blue);
+}
+
 WS2811Module.prototype.turnOn = function (hexColor) {
+  if (this.blinkInterval) {
+    clearInterval(this.blinkInterval);
+    this.blinkInterval = false;
+    this.ledOn(red, green, blue);
+    return;
+  }
+
   const rgbColor = hexToRGB(hexColor);
-  this.led.ledOn(rgbColor[0], rgbColor[1], rgbColor[2]);
-  this.ledStatus = true;
+  this.ledOn(rgbColor[0], rgbColor[1], rgbColor[2]);
 }
 
 WS2811Module.prototype.blink = function blink(hexColor) {
@@ -64,7 +93,7 @@ WS2811Module.prototype.blink = function blink(hexColor) {
   this.ledColor.green = rgbColor[1];
   this.ledColor.blue = rgbColor[2];
   if (!this.blinkInterval) {
-    this.turnOnRGB(rgbColor[0], rgbColor[1], rgbColor[2]);
+    this.ledOn(rgbColor[0], rgbColor[1], rgbColor[2]);
     this.blinkInterval = setInterval(() => {
       this.toggle();
     }, 500);
@@ -73,9 +102,9 @@ WS2811Module.prototype.blink = function blink(hexColor) {
 
 WS2811Module.prototype.toggle = function toggle() {
   if (this.ledStatus) {
-    this.turnOff();
+    this.ledOff();
   } else {
-    this.turnOnRGB(this.ledColor.red, this.ledColor.red, this.ledColor.red);
+    this.ledOn(this.ledColor.red, this.ledColor.green, this.ledColor.blue);
   }
 }
 
