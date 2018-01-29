@@ -13,7 +13,7 @@ led.blink(colors.info);
 
 setTimeout(() => {
   led.turnOff();
-}, 5000)
+}, 10000)
 
 const release = () => {
   led.release();

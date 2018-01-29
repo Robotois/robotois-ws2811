@@ -47,7 +47,7 @@ WS2811Module.prototype.ledOn = function ledOn(red, green, blue) {
   this.ledStatus = true;
 }
 
-WS2811Module.prototype.ledOff = function ledOff(red, green, blue) {
+WS2811Module.prototype.ledOff = function ledOff() {
   this.led.ledOff();
   this.ledStatus = false;
 }
@@ -61,7 +61,7 @@ WS2811Module.prototype.turnOff = function turnOff() {
     return;
   }
 
-  this.rgb.ledOff();
+  this.ledOff();
 };
 
 WS2811Module.prototype.turnOnRGB = function (red, green, blue) {
