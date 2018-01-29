@@ -76,14 +76,14 @@ WS2811Module.prototype.turnOnRGB = function (red, green, blue) {
 }
 
 WS2811Module.prototype.turnOn = function (hexColor) {
+  const rgbColor = hexToRGB(hexColor);
   if (this.blinkInterval) {
     clearInterval(this.blinkInterval);
     this.blinkInterval = false;
-    this.ledOn(red, green, blue);
+    this.ledOn(rgbColor[0], rgbColor[1], rgbColor[2]);
     return;
   }
 
-  const rgbColor = hexToRGB(hexColor);
   this.ledOn(rgbColor[0], rgbColor[1], rgbColor[2]);
 }
 
