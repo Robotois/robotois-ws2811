@@ -25,7 +25,8 @@
 #define ARRAY_SIZE(stuff)       (sizeof(stuff) / sizeof(stuff[0]))
 // defaults for cmdline options
 #define TARGET_FREQ             WS2811_TARGET_FREQ
-#define GPIO_PIN                18
+#define GPIO_PIN1                18
+#define GPIO_PIN2                12
 #define DMA                     10
 // #define STRIP_TYPE            WS2811_STRIP_RGB		// WS2812/SK6812RGB integrated chip+leds
 #define STRIP_TYPE              WS2811_STRIP_GBR		// WS2812/SK6812RGB integrated chip+leds
@@ -44,13 +45,19 @@ ws2811_return_t ret;
  * @param w Width of the data matrix
  * @param h Height of the data matrix, if height is 1 it will be like an array
  */
-void ledStripInit(int w = 8, int h = 8, uint8_t brightness = 255) {
+void ledStripInit(int w = 8, int h = 8, uint8_t brightness = 255, uint8_t pin = 1) {
   width = w;
   height = h;
   led_count = w*h;
+  uint8_t ioPin;
+  if(pin == 1) {
+    ioPin = GPIO_PIN1;
+  } else {
+    ioPin = GPIO_PIN2;
+  }
   ledstring.freq = TARGET_FREQ;
   ledstring.dmanum = DMA;
-  ledstring.channel[0].gpionum = GPIO_PIN;
+  ledstring.channel[0].gpionum = ioPin;
   ledstring.channel[0].count = led_count;
   ledstring.channel[0].invert = 0;
   ledstring.channel[0].brightness = brightness;
@@ -140,6 +147,28 @@ void turnOn(int idx, uint8_t red, uint8_t green, uint8_t blue) {
   color = (red << 16) | (green << 8) | (blue);
   // printf("Color: %x\n", color);
   turnOn(idx, color);
+}
+
+void allOn(uint8_t red, uint8_t green, uint8_t blue) {
+  uint32_t color = 0x00000000;
+  color = (red << 16) | (green << 8) | (blue);
+  int x, y;
+
+  for (y = 0; y < (height ); y++)
+  {
+      for (x = 0; x < width; x++)
+      {
+          matrix[y * width + x] = color;
+      }
+  }
+  matrix_render();
+  ledStripDisplay();
+}
+
+void allOff() {
+  matrix_clear();
+  matrix_render();
+  ledStripDisplay();
 }
 
 /**

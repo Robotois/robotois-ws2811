@@ -17,8 +17,8 @@ using v8::Value;
 
 Persistent<Function> MyObject::constructor;
 
-MyObject::MyObject() {
-  ledStripInit(1, 1, (uint8_t) 64);
+MyObject::MyObject(int width, int height, uint8_t brightness, uint8_t pin) {
+  ledStripInit(width, height, brightness, pin);
 }
 
 MyObject::~MyObject() {
@@ -36,6 +36,8 @@ void MyObject::Init(Local<Object> exports) {
   // NODE_SET_PROTOTYPE_METHOD(tpl, "plusOne", PlusOne);
   NODE_SET_PROTOTYPE_METHOD(tpl, "ledOn", ledOn);
   NODE_SET_PROTOTYPE_METHOD(tpl, "ledOff", ledOff);
+  NODE_SET_PROTOTYPE_METHOD(tpl, "allLedOn", allLedOn);
+  NODE_SET_PROTOTYPE_METHOD(tpl, "allLedOff", allLedOff);
   NODE_SET_PROTOTYPE_METHOD(tpl, "release", release);
 
   constructor.Reset(isolate, tpl->GetFunction());
@@ -46,10 +48,41 @@ void MyObject::Init(Local<Object> exports) {
 void MyObject::New(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = args.GetIsolate();
 
+  int width, height, brightness, gpio;
+  MyObject *obj;
+  uint8_t _argc = args.Length();
   if (args.IsConstructCall()) {
     // Invoked as constructor: `new MyObject(...)`
     // double value = args[0]->IsUndefined() ? 0 : args[0]->NumberValue();
-    MyObject* obj = new MyObject();
+    switch (_argc) {
+      case 0:
+        obj = new MyObject();
+        break;
+      case 1: // Led strip
+        width = (int) args[0]-> NumberValue();
+        obj = new MyObject(width, 1);
+        break;
+      case 2: // Led strip with brightness
+        width = (int) args[0]-> NumberValue();
+        brightness = (int) args[1]-> NumberValue();
+        obj = new MyObject(width, 1, brightness);
+        break;
+      case 3: // Led strip with brightness
+        width = (int) args[0]-> NumberValue();
+        height = (int) args[1]-> NumberValue();
+        brightness = (int) args[2]-> NumberValue();
+        obj = new MyObject(width, height, brightness);
+        break;
+      case 4: // Led strip with brightness
+        width = (int) args[0]-> NumberValue();
+        height = (int) args[1]-> NumberValue();
+        brightness = (int) args[2]-> NumberValue();
+        gpio = (int) args[3]-> NumberValue();
+        obj = new MyObject(width, height, brightness, gpio);
+        break;
+      default:
+        obj = new MyObject();
+    }
     obj->Wrap(args.This());
     args.GetReturnValue().Set(args.This());
   } else {
@@ -67,47 +100,56 @@ void MyObject::New(const FunctionCallbackInfo<Value>& args) {
 void MyObject::ledOn(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = args.GetIsolate();
 
+  int ledNumber = 0;
+  uint8_t red, green, blue;
   // Check the number of arguments passed.
-  if (args.Length() != 3) {
-    // Throw an Error that is passed back to JavaScript
-    isolate->ThrowException(Exception::TypeError(
-        String::NewFromUtf8(isolate, "[LEDStrip] => Wrong number of arguments")));
-    return;
+  if (args.Length() == 4) {
+    ledNumber = (int) args[0]->NumberValue();
+    red = (uint8_t) args[1]->NumberValue();
+    green = (uint8_t) args[2]->NumberValue();
+    blue = (uint8_t) args[3]->NumberValue();
+  } else {
+    red = (uint8_t) args[0]->NumberValue();
+    green = (uint8_t) args[1]->NumberValue();
+    blue = (uint8_t) args[2]->NumberValue();
   }
+
+  // Perform the operation
+  turnOn(ledNumber, blue, green, red);
+}
+
+void MyObject::allLedOn(const FunctionCallbackInfo<Value>& args) {
+  Isolate* isolate = args.GetIsolate();
 
   // Perform the operation
   uint8_t red = (uint8_t) args[0]->NumberValue(),
     green = (uint8_t) args[1]->NumberValue(),
     blue = (uint8_t) args[2]->NumberValue();
 
-  turnOn((uint8_t) 0, blue, green, red);
+  allOn(blue, green, red);
 }
 
 void MyObject::ledOff(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = args.GetIsolate();
 
+  int ledNumber = 0;
   // Check the number of arguments passed.
-  if (args.Length() != 0) {
-    // Throw an Error that is passed back to JavaScript
-    isolate->ThrowException(Exception::TypeError(
-        String::NewFromUtf8(isolate, "[LEDStrip] => Wrong number of arguments")));
-    return;
+  if (args.Length() == 1) {
+    ledNumber = (int) args[0]->NumberValue();
   }
 
   // Perform the operation
-  turnOff((uint8_t) 0);
+  turnOff(ledNumber);
+}
+
+void MyObject::allLedOff(const FunctionCallbackInfo<Value>& args) {
+  Isolate* isolate = args.GetIsolate();
+
+  allOff();
 }
 
 void MyObject::release(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = args.GetIsolate();
-
-  // Check the number of arguments passed.
-  if (args.Length() != 0) {
-    // Throw an Error that is passed back to JavaScript
-    isolate->ThrowException(Exception::TypeError(
-        String::NewFromUtf8(isolate, "[LEDStrip] => Wrong number of arguments")));
-    return;
-  }
 
   // Perform the operation
   ledStripRelease();
