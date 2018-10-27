@@ -1,5 +1,5 @@
 const LEDStrip = require('../index.js');
-const led = new LEDStrip(3);
+const led = new LEDStrip(16);
 
 const colors = {
   primary: '#00d1b2',
@@ -10,7 +10,7 @@ const colors = {
   error: '#ff3860',
 };
 
-led.allBlink(colors.warning);
+led.allBlink(colors.success);
 
 setTimeout(() => {
   led.allOff();

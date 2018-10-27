@@ -14,14 +14,7 @@ const hexToRGB = function hexToRGB(hx) {
   ];
 };
 
-// const colors = {
-//   info: '#209cee',
-//   success: '#23d160',
-//   warning: '#ffdd57',
-//   error: '#ff3860',
-// };
-
-function WS2811Module(width = 1, height = 1, brightness = 192, gpioPin = 1) {
+function WS2811Module(width = 1, height = 1, brightness = 32, gpioPin = 1) {
   const selft = this;
 
   this.led = new addon.MyObject(width, height, brightness, gpioPin);
